@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trang Luu — Portfolio</title>
+<meta name="description" content="Portfolio of Trang Luu - Journalist">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS — tweak colours here ============ */
+  :root {
+    --bg: #ecebe6;          /* warm off-white page */
+    --card: #d9d8d2;        /* slightly darker card */
+    --ink: #1d1d1b;         /* near-black text */
+    --muted: #5f5e59;       /* secondary text */
+    --line: #1d1d1b;
+    --radius: 14px;
+    --gap: 14px;
+    --max: 1200px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: sticky; top: 12px; z-index: 10;
+    margin: 12px auto 0; max-width: calc(var(--max) - 32px);
+    width: calc(100% - 32px);
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    background: rgba(217, 216, 210, .85);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    padding: 8px 20px;
+  }
+  .logo { font-family: Caveat, cursive; font-size: 34px; text-decoration: none; line-height: 1; }
+  .nav-links { display: flex; gap: 14px; }
+  .nav-links a { text-decoration: none; font-size: 17px; }
+  .nav-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .nav-icons { display: flex; gap: 18px; justify-content: flex-end; align-items: center; }
+  .nav-icons a { display: flex; text-decoration: none; }
+  .nav-icons svg { width: 22px; height: 22px; }
+  .nav-icons .in { font-family: Caveat, cursive; font-size: 26px; line-height: 1; }
+
+  /* ============ HERO ============ */
+  .hero {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 80px;
+    align-items: center; padding: 56px 0 80px; min-height: 80vh;
+  }
+  .portrait {
+    aspect-ratio: 4 / 5; border-radius: var(--radius); overflow: hidden;
+    background: linear-gradient(160deg, #cfcdc6, #a9a69d);
+    display: grid; place-items: center; color: #6c6a63; font-size: 15px;
+  }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+  .hero h1 {
+    font-size: clamp(44px, 6vw, 72px); font-weight: 800;
+    letter-spacing: -0.045em; line-height: 1;
+  }
+  .hero h1 .nick { display: block; font-weight: 500; color: var(--muted); }
+  .hero h2 { font-size: clamp(22px, 2.2vw, 27px); font-weight: 600; letter-spacing: -0.025em; margin: 36px 0 18px; }
+  .hero p.lede { max-width: 34em; }
+  .hero-foot {
+    display: grid; grid-template-columns: 1fr auto; gap: 24px;
+    align-items: end; margin-top: 64px;
+  }
+  .meta { font-size: 16px; margin-bottom: 18px; }
+  .btn {
+    display: block; text-align: center; text-decoration: none;
+    background: var(--ink); color: var(--bg);
+    border-radius: 6px; padding: 10px 24px; font-size: 18px; font-weight: 500;
+    transition: opacity .2s;
+  }
+  .btn:hover { opacity: .85; }
+  .open { text-align: right; font-size: 16px; }
+  .open strong { display: block; font-size: clamp(40px, 5vw, 56px); font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+
+  /* ============ SECTIONS ============ */
+  section { padding: 40px 0; }
+  .label { font-size: 16px; margin-bottom: 18px; }
+  .label::before { content: "•"; margin-right: 8px; }
+
+  .masonry { columns: 2; column-gap: var(--gap); }
+  .card {
+    break-inside: avoid; background: var(--card);
+    border-radius: var(--radius); padding: 22px 20px;
+    margin-bottom: var(--gap); display: block;
+  }
+  .card h3 { font-size: 24px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+  .card .when { font-size: 16px; margin-top: 2px; }
+  .card p { font-size: 15px; color: var(--muted); margin-top: 16px; }
+
+  .stat { display: flex; align-items: center; gap: 16px; margin-top: 22px; }
+  .stat .big { font-size: clamp(44px, 5vw, 60px); font-weight: 800; letter-spacing: -0.05em; line-height: 1; white-space: nowrap; }
+  .stat .cap { font-size: 15px; line-height: 1.35; max-width: 16em; }
+  .quote, .card .quote { color: var(--ink); font-size: clamp(32px, 3.6vw, 44px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; margin-top: 18px; }
+
+  .pics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+  .ph {
+    aspect-ratio: 4 / 3; border-radius: 6px; overflow: hidden;
+    background: linear-gradient(135deg, #bdbab2, #8f8c84);
+  }
+  .ph img { width: 100%; height: 100%; object-fit: cover; }
+  .ph.wide { aspect-ratio: 16 / 9; grid-column: 1 / -1; }
+  .pics figcaption { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.3; }
+
+  .pics.three { grid-template-columns: repeat(3, 1fr); cursor: pointer; }
+  .ph.poster { aspect-ratio: 1241 / 1754; }
+  .ph img { transition: transform .3s; }
+  .pics.three:hover img { transform: scale(1.02); }
+  .video { position: relative; display: block; margin-top: 18px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #000; }
+  .video img { width: 100%; height: 100%; object-fit: cover; opacity: .9; transition: opacity .2s; }
+  .video:hover img { opacity: 1; }
+  .play { position: absolute; inset: 0; margin: auto; width: 60px; height: 60px; border-radius: 50%; background: rgba(29, 29, 27, .8); color: #fff; display: grid; place-items: center; font-size: 22px; padding-left: 4px; }
+  .card .partner { color: var(--ink); font-size: 14px; margin-top: 10px; }
+  .card-foot + .card-foot { margin-top: 12px; }
+
+  .card-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-top: 18px; font-size: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { border: 1.2px solid var(--line); border-radius: 999px; padding: 1px 11px; font-size: 14px; white-space: nowrap; }
+
+  /* Small card grid (side projects) */
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
+  .mini .ph { aspect-ratio: 1; border-radius: 10px; margin-bottom: 12px; }
+  .mini h3 { font-size: 17px; font-weight: 600; }
+  .mini .count { font-size: 12px; color: var(--muted); }
+  .mini p { font-size: 14px; color: var(--muted); margin: 6px 0 10px; }
+  .mini a { font-size: 14px; text-decoration: none; }
+  .mini a:hover { text-decoration: underline; }
+
+  /* Dark title-card cover (Journalism, Substack) */
+  .cover {
+    width: 100%; aspect-ratio: 1; margin-bottom: 12px;
+    background: var(--ink); color: var(--bg); border: 0; border-radius: 10px;
+    padding: 18px; display: flex; flex-direction: column; justify-content: space-between;
+    text-align: left; font: inherit; cursor: pointer; text-decoration: none;
+    transition: background .2s;
+  }
+  .cover:hover { background: #000; }
+  .t-kicker, .t-meta { font-size: 13px; opacity: .75; line-height: 1.35; }
+  .t-title { font-weight: 600; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+  button.more { font: inherit; font-size: 14px; background: none; border: 0; padding: 0; color: var(--ink); cursor: pointer; }
+  button.more:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Pop-up list of stories */
+  .gallery {
+    border: 0; padding: 0; margin: auto;
+    width: min(900px, calc(100vw - 32px)); max-height: calc(100dvh - 32px);
+    background: var(--bg); color: var(--ink); border-radius: var(--radius);
+  }
+  .gallery::backdrop { background: rgba(20, 20, 18, .7); }
+  .g-head { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 20px; background: var(--bg); z-index: 1; }
+  .g-head .label { margin: 0; }
+  .g-close { font: inherit; font-size: 16px; background: none; border: 0; color: var(--ink); cursor: pointer; white-space: nowrap; }
+  .clips { list-style: none; padding: 0 20px; }
+  .clips li { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-top: 1.5px solid var(--line); }
+  .clips li:last-child { border-bottom: 1.5px solid var(--line); }
+  .c-type { font-size: 14px; color: var(--muted); padding-top: 2px; }
+  .clips a { font-weight: 600; font-size: 18px; line-height: 1.25; letter-spacing: -0.015em; text-decoration: none; }
+  .clips a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .clips-foot { padding: 16px 20px 22px; font-size: 15px; color: var(--muted); }
+  .shots { columns: 3; column-gap: 12px; padding: 0 20px 8px; }
+  .shots figure { break-inside: avoid; margin-bottom: 12px; }
+  .shots img { width: 100%; border-radius: 6px; }
+  .shots figcaption { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  @media (max-width: 640px) { .shots { columns: 2; } }
+  @media (max-width: 520px) {
+    .clips li { grid-template-columns: 1fr; gap: 2px; }
+  }
+
+  /* About / education two-column layout */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+  .split .label { margin: 0; }
+  /* About me: photos sit at the bottom of the left column, level with the big photo on the right */
+  .about-left { display: flex; flex-direction: column; justify-content: space-between; gap: 18px; }
+  .about-side { margin-top: 0; max-width: 520px; }
+  .about-side .ph { aspect-ratio: 3 / 4; }
+  .about-q { font-size: clamp(22px, 2.3vw, 27px); line-height: 1.2; letter-spacing: -0.02em; }
+  .about-a { color: var(--muted); font-size: 15px; margin-top: 18px; }
+  .langs { display: flex; gap: 40px; margin-top: 28px; font-size: 15px; }
+  .langs span { display: block; font-size: 12px; color: var(--muted); }
+
+  .table h3 { font-size: 18px; font-weight: 600; margin: 0 0 12px; }
+  .row { display: grid; grid-template-columns: 1.2fr 1.4fr auto; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 15px; }
+  .row:last-child { border-bottom: 1px solid var(--line); }
+  .row b { font-weight: 500; }
+  .skills h3 { font-size: 18px; font-weight: 600; margin: 32px 0 10px; }
+
+  /* ============ CONTACT ============ */
+  .contact {
+    background: var(--card); border-radius: var(--radius);
+    padding: 48px 32px; margin-top: 40px;
+    display: grid; grid-template-columns: 1fr minmax(240px, 380px); gap: 32px; align-items: center;
+  }
+  .contact h2 { font-size: clamp(44px, 6vw, 64px); font-weight: 800; letter-spacing: -0.05em; line-height: .95; }
+  .contact .mail { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 16px; }
+  .copy { font: inherit; font-size: 12px; background: none; border: 1.2px solid var(--line); border-radius: 999px; padding: 0 10px; cursor: pointer; color: var(--ink); }
+  .contact .li { display: block; font-size: 16px; margin: 6px 0 16px; }
+  footer { display: flex; justify-content: space-between; font-size: 13px; padding: 18px 0 28px; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .grid4 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 32px; min-height: 0; }
+    .portrait { max-width: 320px; }
+    .hero-foot { grid-template-columns: 1fr; margin-top: 36px; }
+    .open { text-align: left; }
+    .masonry { columns: 1; }
+    .split { grid-template-columns: 1fr; gap: 18px; }
+    .contact { grid-template-columns: 1fr; padding: 32px 20px; }
+    .nav { padding: 8px 14px; }
+    .nav-links { gap: 10px; }
+    .nav-links a { font-size: 15px; }
+    .nav-icons { gap: 12px; }
+  }
+  @media (max-width: 420px) {
+    .grid4 { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 1fr auto; }
+    .row span:nth-child(2) { grid-column: 1 / -1; grid-row: 2; color: var(--muted); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <span></span>
+  <div class="nav-links">
+    <a href="#works">Works</a>
+    <a href="#about">About</a>
+    <a href="#education">Education</a>
+  </div>
+  <div class="nav-icons">
+    <a href="mailto:luuquynhtrang.work@gmail.com" aria-label="Email">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/trangqnh" class="in" aria-label="LinkedIn" target="_blank" rel="noopener">in</a>
+  </div>
+</nav>
+
+<main class="wrap" id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="portrait">
+      <img src="images/me-portrait.webp" alt="Portrait of Trang Luu">
+    </div>
+    <div>
+      <h1>Hi, I'm Trang <span class="nick">(Tessa)</span></h1>
+      <h2>Journalist, writer &amp; producer</h2>
+      <p class="lede">I produce, write and edit multimedia stories for broadcast and social media, turning complex social issues, international affairs and culture into stories people want to watch to the end.</p>
+      <div class="hero-foot">
+        <div>
+          <p class="meta">Based in Hanoi, Vietnam<br>GMT +7 · English, Vietnamese, Russian </p>
+          <a class="btn" href="#contact">Get in touch</a>
+        </div>
+        <div class="open">Open to roles in<strong>HN / HCMC</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SELECTED WORKS ============ -->
+  <section id="works">
+    <p class="label">Selected works</p>
+    <div class="masonry">
+
+      <!-- Most-viewed story -->
+      <article class="card">
+        <h3>Legal rights for children in same-sex families</h3>
+        <p class="when">Apr' 26 · Vietnam Today</p>
+        <div class="stat"><span class="big">30K+</span><span class="cap">Views across platforms, my most-viewed story as a journalist</span></div>
+        <a class="video" href="https://www.youtube.com/watch?v=PErE5F4e29k&t=11s" target="_blank" rel="noopener" aria-label="Watch the story on YouTube">
+          <img src="https://img.youtube.com/vi/PErE5F4e29k/hqdefault.jpg" alt="Still from the story on legal rights for children in same-sex families" loading="lazy">
+          <span class="play" aria-hidden="true">▶</span>
+        </a>
+        <p>Pitched, wrote and produced in one week. The story looked at proposed legal protections for children raised by same-sex couples, and opened up wide discussion around the queer community online.</p>
+        <div class="card-foot">
+          <div class="tags"><span class="tag">Video editing</span><span class="tag">Scriptwriting</span></div>
+          <a href="https://www.youtube.com/watch?v=PErE5F4e29k&t=11s" target="_blank" rel="noopener">Watch ↗</a>
+        </div>
+      </article>
+
+      <!-- Chín Muồi exhibition: clicking the posters or the button opens the full set -->
+      <article class="card">
+        <h3>Chín Muồi Exhibition</h3>
+        <p class="when">Jan' 24 · Hanoi</p>
+        <div class="pics three" data-open="exhibit" role="button" tabindex="0" aria-label="See all exhibition pieces">
+          <figure><div class="ph poster"><img src="images/chin-muoi-existential.png" alt="Existential exhibition poster"></div></figure>
+          <figure><div class="ph poster"><img src="images/chin-muoi-soul-mate.webp" alt="Soul Mate exhibition poster"></div></figure>
+          <figure><div class="ph poster"><img src="images/chin-muoi-tangled.png" alt="Tangled exhibition poster"></div></figure>
+        </div>
+        <p><i>Chín muồi</i> means ripe: growth, maturity, and fruit coming into its own. For RMIT Photography Club's art exhibition, I helped shape the concept and curate the work, and wrote the English exhibition copy and narratives that tie each piece to that idea.</p>
+        <div class="card-foot">
+          <div class="tags"><span class="tag">Photo curation</span><span class="tag">Visual storytelling</span></div>
+          <button class="more" type="button" data-open="exhibit">See all 7 pieces →</button>
+        </div>
+        <p class="partner">x RMIT Photography Club</p>
+      </article>
+
+      <!-- Vietnam Explained -->
+      <article class="card">
+        <h3>Producer, Vietnam Explained</h3>
+        <p class="when">2026 · Vietnam Today</p>
+        <p class="quote">Big questions, short answers.</p>
+        <p>Produced and edited episodes of Vietnam Today's explainer series, which breaks down social issues, international affairs and cultural trends in a few minutes each. I took episodes from research and scripting through interviews to the final cut, on topics from dining etiquette and third spaces to Vietnam's rising obesity rate.</p>
+        <div class="card-foot">
+          <div class="tags"><span class="tag">Content production management</span><span class="tag">Scriptwriting</span><span class="tag">Visual storytelling</span><span class="tag">Video editing</span></div>
+        </div>
+        <div class="card-foot">
+          <span>x VTV · Vietnam Today</span>
+          <a href="https://vietnamtoday.vtv.vn/topic/vietnam-explained-46.htm" target="_blank" rel="noopener">Watch the show ↗</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ SIDE WORK ============ -->
+  <section>
+    <p class="label">Other things I make</p>
+    <div class="grid4">
+      <!-- Journalism: clicking the cover or the button opens the story list below -->
+      <div class="mini">
+        <button class="cover" type="button" data-open="news" aria-label="Open my stories">
+          <span class="t-kicker">Vietnam Television · 2026</span>
+          <span class="t-title">Broadcast-ready stories for Vietnam Today</span>
+          <span class="t-meta">International affairs · culture · marginalized communities</span>
+        </button>
+        <h3>Journalism</h3>
+        <p>Co-reported stories for Vietnam's international English-language channel as a reporter.</p>
+        <button class="more" type="button" data-open="news">See the stories →</button>
+      </div>
+      <!-- Substack: the cover and the link both open your Substack -->
+      <div class="mini">
+        <a class="cover" href="https://tessaluu.substack.com/" target="_blank" rel="noopener">
+          <span class="t-kicker">Substack · Newsletter</span>
+          <span class="t-title">Personal essays and writing</span>
+          <span class="t-meta">tessaluu.substack.com</span>
+        </a>
+        <h3>Writing</h3>
+        <p>My personal Substack.</p>
+        <a href="https://tessaluu.substack.com/" target="_blank" rel="noopener">Read on Substack ↗</a>
+      </div>    </div>
+  </section>
+
+  <!-- ============ JOURNALISM POP-UP (opens from the Journalism card) ============ -->
+  <!-- To add a story, copy one <li> line and change the type, link and title. -->
+  <dialog id="news" class="gallery" aria-label="Journalism">
+    <div class="g-head">
+      <p class="label">Vietnam Today · selected stories, 2026</p>
+      <button type="button" class="g-close" data-close>Close ✕</button>
+    </div>
+    <ol class="clips">
+      <li><span class="c-type">Report</span><a href="https://www.youtube.com/watch?v=s4vC4yqOZhE" target="_blank" rel="noopener">Teachers empower STEAM education for ethnic girls ↗</a></li>
+      <li><span class="c-type">Report</span><a href="https://vietnamtoday.vtv.vn/vietnamese-folk-culture-blends-with-ballet-100260331114854101.htm" target="_blank" rel="noopener">Vietnamese folk culture blends with ballet ↗</a></li>
+      <li><span class="c-type">Report</span><a href="https://www.youtube.com/watch?v=bdfXnoZeULc" target="_blank" rel="noopener">Balcony urban solar energy ↗</a></li>
+      <li><span class="c-type">Focus</span><a href="https://www.youtube.com/watch?v=tjFpH84bF_o" target="_blank" rel="noopener">Late marriage trend and matchmaking ↗</a></li>
+      <li><span class="c-type">Focus</span><a href="https://vietnamtoday.vtv.vn/legal-rights-for-children-in-same-sex-families-considered-100260422154937538.htm" target="_blank" rel="noopener">Gay marriage and legal rights for children considered ↗</a></li>
+      <li><span class="c-type">Focus</span><a href="https://youtu.be/x4EA1Lm8lH0" target="_blank" rel="noopener">Digital literacy training for people with disabilities ↗</a></li>
+      <li><span class="c-type">Focus</span><a href="https://vietnamtoday.vtv.vn/how-dien-bien-phu-victory-reshaped-africa-100260507113818158.htm" target="_blank" rel="noopener">Dien Bien Phu and the decolonization movement ↗</a></li>
+      <li><span class="c-type">VN Explained</span><a href="https://vietnamtoday.vtv.vn/the-art-of-vietnamese-dining-etiquette-vietnam-explained-100260624121057487.htm" target="_blank" rel="noopener">Vietnamese dining etiquette ↗</a></li>
+      <li><span class="c-type">Focus</span><a href="https://www.youtube.com/watch?v=CElcPDbkh1g" target="_blank" rel="noopener">Child abuse protection: Hotline 111 ↗</a></li>
+      <li><span class="c-type">VN Explained</span><a href="https://vietnamtoday.vtv.vn/why-are-obesity-rates-low-in-viet-nam-vietnam-explained-100261114121000144.htm" target="_blank" rel="noopener">Vietnam's rising obesity rate ↗</a></li>
+      <li><span class="c-type">VN Explained</span><a href="https://vietnamtoday.vtv.vn/the-reinvention-of-vietnams-third-space-vietnam-explained-100261024054223207.htm" target="_blank" rel="noopener">The evolution of third spaces ↗</a></li>
+      <li><span class="c-type">Report</span><a href="https://vietnamtoday.vtv.vn/the-rise-of-ai-vibe-coding-trend-100260726175704094.htm" target="_blank" rel="noopener">The rise of AI vibe coding ↗</a></li>
+      <li><span class="c-type">VN Explained</span><a href="https://vietnamtoday.vtv.vn/the-organised-chaos-of-vietnams-cities-vietnam-explained-100260908044121338.htm" target="_blank" rel="noopener">Vietnam's urban architectural landscape ↗</a></li>
+      <li><span class="c-type">Infographic</span><a href="https://www.youtube.com/watch?v=GGBCasPSmqo" target="_blank" rel="noopener">The rise of solopreneurship ↗</a></li>
+      <li><span class="c-type">Report</span><a href="https://vietnamtoday.vtv.vn/walking-through-historic-landmarks-100260819140137113.htm" target="_blank" rel="noopener">The August Revolution ↗</a></li>
+      <li><span class="c-type">VN Explained</span><a href="https://vietnamtoday.vtv.vn/why-are-people-choosing-vietnam-vietnam-explained-100261006043757598.htm" target="_blank" rel="noopener">Why are overseas Vietnamese returning ↗</a></li>
+      <li><span class="c-type">VN Explained</span><a href="https://vietnamtoday.vtv.vn/the-beauty-of-vietnamese-language-vietnam-explained-100260804113059629.htm" target="_blank" rel="noopener">The beauty of the Vietnamese language ↗</a></li>
+    </ol>
+    <p class="clips-foot">All stories aired on Vietnam Today, VTV's international English-language channel.</p>
+  </dialog>
+
+  <!-- ============ CHÍN MUỒI POP-UP (opens from the exhibition card) ============ -->
+  <dialog id="exhibit" class="gallery" aria-label="Chín Muồi Exhibition">
+    <div class="g-head">
+      <p class="label">Chín Muồi Exhibition · RMIT Photography Club, Jan 2024</p>
+      <button type="button" class="g-close" data-close>Close ✕</button>
+    </div>
+    <div class="shots">
+      <figure><img src="images/chin-muoi-banner.webp" alt="Chín Muồi exhibition banner" loading="lazy"><figcaption>Exhibition banner</figcaption></figure>
+      <figure><img src="images/chin-muoi-existential.png" alt="Existential poster" loading="lazy"><figcaption>Existential</figcaption></figure>
+      <figure><img src="images/chin-muoi-soul-mate.webp" alt="Soul Mate poster" loading="lazy"><figcaption>Soul Mate</figcaption></figure>
+      <figure><img src="images/chin-muoi-meaning.webp" alt="Meaning of the exhibition panel" loading="lazy"><figcaption>Meaning of the exhibition</figcaption></figure>
+      <figure><img src="images/chin-muoi-artifacts.png" alt="Artifacts poster" loading="lazy"><figcaption>Artifacts</figcaption></figure>
+      <figure><img src="images/chin-muoi-spirit.png" alt="Spirit poster" loading="lazy"><figcaption>Spirit</figcaption></figure>
+      <figure><img src="images/chin-muoi-tangled.png" alt="Tangled poster" loading="lazy"><figcaption>Tangled</figcaption></figure>
+    </div>
+  </dialog>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="split">
+    <div class="about-left">
+      <p class="label">About me</p>
+      <div class="pics about-side">
+        <div class="ph"><img src="images/me-speaking.jpg" alt="Trang speaking at a panel" style="object-position:62% center"></div>
+        <div class="ph"><img src="images/me-graduation.jpg" alt="Trang holding her certificate on campus" style="object-position:center 55%"></div>
+      </div>
+    </div>
+    <div>
+      <p class="about-q">How does a finance graduate end up producing TV stories?</p>
+      <p class="about-a">Tldr: While studying finance at RMIT, I wrote long-form pieces for the university's channels. Now I'm a multimedia journalist at Vietnam Today, wearing multiple hats in the production pipeline. I come up with ideas, produce content and sometimes I'm a project manager.</p>
+      <div class="pics" style="margin-top:28px">
+        <div class="ph wide"><img src="images/me-lab.jpg" alt="Trang at a computer lab at RMIT"></div>
+      </div>
+      <div class="langs">
+        <div><span>Vietnamese</span>Native</div>
+        <div><span>English</span>Fluent</div>
+        <div><span>Russian</span>Professional</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EDUCATION & SKILLS ============ -->
+  <section id="education" class="split">
+    <p class="label">Education &amp; skills</p>
+    <div>
+      <div class="table">
+        <h3>Education</h3>
+        <div class="row"><b>RMIT University </b><span>Bachelor of Business, Finance</span><span>2022–26</span></div>
+      </div>
+      <div class="skills">
+        <h3>Skills</h3>
+        <div class="tags"><span class="tag">Visual Storytelling</span><span class="tag">Video editing</span><span class="tag">Content production management</span><span class="tag">Scriptwriting</span><span class="tag">Photo curation</span></div>
+        <h3>Tools</h3>
+        <div class="tags"><span class="tag">Premiere Pro</span><span class="tag">Microsoft Office</span><span class="tag">Canva</span><span class="tag">Excel</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="contact">
+    <h2>Let's work together</h2>
+    <div>
+      <div class="mail"><span id="email">luuquynhtrang.work@gmail.com</span><button class="copy" id="copy">Copy</button></div>
+      <a class="li" href="https://www.linkedin.com/in/trangqnh" target="_blank" rel="noopener">linkedin.com/in/trangqnh</a>
+      <a class="btn" href="mailto:luuquynhtrang.work@gmail.com">Email me</a>
+    </div>
+  </section>
+
+  <footer><span>© 2026 Trang Luu</span><span>Hanoi, Vietnam</span></footer>
+</main>
+
+<script>
+  // Open / close pop-ups (data-open="id" opens, Close button or clicking outside closes)
+  document.addEventListener('click', function (e) {
+    var o = e.target.closest('[data-open]');
+    if (o) { var d = document.getElementById(o.getAttribute('data-open')); if (d && d.showModal) d.showModal(); return; }
+    if (e.target.closest('[data-close]')) { e.target.closest('dialog').close(); return; }
+    if (e.target.tagName === 'DIALOG') e.target.close();
+  });
+  // Let keyboard users open the poster grid with Enter
+  document.querySelectorAll('[data-open][role="button"]').forEach(function (el) {
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
+  });
+
+  document.getElementById('copy').addEventListener('click', function () {
+    const email = document.getElementById('email').textContent;
+    navigator.clipboard.writeText(email).then(() => {
+      this.textContent = 'Copied';
+      setTimeout(() => (this.textContent = 'Copy'), 1500);
+    });
+  });
+</script>
+</body>
+</html>
